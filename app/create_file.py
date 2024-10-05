@@ -13,26 +13,27 @@ def create_file(path: str) -> None:
 
     with open(path, "a") as file:
         if not file_exists:
-            print(f"File \'{path}\' created successfully.")
-        print(f"Appending to existing file \'{path}\'.")
+            print(f"File '{path}' created successfully.")
+        else:
+            print(f"Appending to existing file '{path}'.")
 
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    file.write(f"\n{timestamp}\n")
+        # Додаємо запис часу всередині блоку with
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        file.write(f"\n{timestamp}\n")
 
-    line_number = 1
-    while True:
-        content = input(f"Enter content line {line_number}: ")
-        if content.lower() == "stop":
-            break
-        file.write(f"{line_number} {content}\n")
-        line_number += 1
+        line_number = 1
+        while True:
+            content = input(f"Enter content line {line_number}: ")
+            if content.lower() == "stop":
+                break
+            file.write(f"{line_number} {content}\n")
+            line_number += 1
 
 
 def main() -> None:
     args = sys.argv[1:]
 
     if "-d" in args:
-        # Handle directory creation
         d_index = args.index("-d") + 1
         directories = []
 
@@ -44,11 +45,10 @@ def main() -> None:
             dir_path = os.path.join(*directories)
             create_directory(dir_path)
         else:
-            print("No directory specified after \'-d\' flag.")
+            print("No directory specified after '-d' flag.")
             return
 
     if "-f" in args:
-        # Handle file creation
         f_index = args.index("-f") + 1
         if f_index < len(args):
             file_name = args[f_index]
@@ -61,10 +61,10 @@ def main() -> None:
 
             create_file(file_path)
         else:
-            print("No file specified after \'-f\' flag.")
+            print("No file specified after '-f' flag.")
             return
     else:
-        print("You need to specify a file with \'-f\' flag.")
+        print("You need to specify a file with '-f' flag.")
 
 
 if __name__ == "__main__":
