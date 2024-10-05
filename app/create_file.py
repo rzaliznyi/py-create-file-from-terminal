@@ -16,7 +16,7 @@ def create_file(path: str) -> None:
             print(f"File \'{path}\' created successfully.")
         print(f"Appending to existing file \'{path}\'.")
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     file.write(f"\n{timestamp}\n")
 
     line_number = 1
