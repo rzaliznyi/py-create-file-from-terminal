@@ -3,67 +3,41 @@ import sys
 import datetime
 
 
-def create_directory(path: str) -> None:
-    os.makedirs(path, exist_ok=True)
-    print(f"Directory {path} created successfully!")
+def create_file(file_path: str) -> None:
+    mode = "a" if os.path.isfile(file_path) else "w"
+    with open(f"{file_path}", mode) as file:
+        if mode == "a":
+            file.write("\n\n")
 
-
-def create_file(path: str) -> None:
-    file_exists = os.path.exists(path)
-
-    with open(path, "a") as file:
-        if not file_exists:
-            print(f"File '{path}' created successfully.")
-        else:
-            print(f"Appending to existing file '{path}'.")
-
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        file.write(f"{timestamp}\n")
+        file.write(f"{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
         line_number = 1
         while True:
-            content = input(f"Enter content line {line_number}: ")
-            if content.lower() == "stop":
+            next_line = input("Enter content line: ")
+            if next_line == "stop":
                 break
-            file.write(f"{line_number} {content}\n")
+            file.write(f"\n{line_number} {next_line}")
             line_number += 1
 
 
 def main() -> None:
-    args = sys.argv[1:]
+    arg = sys.argv
+    directory = os.getcwd()
+    file_name = None
 
-    if "-d" in args:
-        d_index = args.index("-d") + 1
-        directories = []
+    if "-d" in arg:
+        dir_index = arg.index("-d") + 1
+        file_index = (arg.index("-f")
+                      if arg.index("-f") > arg.index("-d") else len(arg))
+        directory = os.path.join(*arg[dir_index:file_index])
 
-        while d_index < len(args) and args[d_index] != "-f":
-            directories.append(args[d_index])
-            d_index += 1
+    if "-f" in arg:
+        file_name = arg[arg.index("-f") + 1]
 
-        if directories:
-            dir_path = os.path.join(*directories)
-            create_directory(dir_path)
-        else:
-            print("No directory specified after '-d' flag.")
-            return
+    os.makedirs(directory, exist_ok=True)
 
-    if "-f" in args:
-        f_index = args.index("-f") + 1
-        if f_index < len(args):
-            file_name = args[f_index]
-
-            if "-d" in args:
-                dir_path = os.path.join(*directories)
-                file_path = os.path.join(dir_path, file_name)
-            else:
-                file_path = file_name
-
-            create_file(file_path)
-        else:
-            print("No file specified after '-f' flag.")
-            return
-    else:
-        print("You need to specify a file with '-f' flag.")
+    if file_name:
+        create_file(os.path.join(directory, file_name))
 
 
 if __name__ == "__main__":
