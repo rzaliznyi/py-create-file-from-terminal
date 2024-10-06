@@ -17,7 +17,6 @@ def create_file(path: str) -> None:
         else:
             print(f"Appending to existing file '{path}'.")
 
-        # Add timestamp
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         file.write(f"{timestamp}\n")
 
