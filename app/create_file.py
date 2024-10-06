@@ -19,7 +19,7 @@ def create_file(path: str) -> None:
 
         # Додаємо запис часу всередині блоку with
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        file.write(f"\n{timestamp}\n")
+        file.write(f"{timestamp}\n")
 
         line_number = 1
         while True:
