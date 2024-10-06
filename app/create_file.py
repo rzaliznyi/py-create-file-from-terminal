@@ -17,9 +17,9 @@ def create_file(path: str) -> None:
         else:
             print(f"Appending to existing file '{path}'.")
 
-        # Додаємо запис часу всередині блоку with
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        file.write(f"{timestamp}\n")
+            # Додаємо запис часу лише якщо файл існує
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            file.write(f"{timestamp}\n")
 
         line_number = 1
         while True:
