@@ -21,17 +21,18 @@ def create_file(file_path: str) -> None:
 
 
 def main() -> None:
-    arg = sys.argv
+    args = sys.argv[1:]
     directory = os.getcwd()
     file_name = None
 
-    if "-d" in arg:
-        dir_index = arg.index("-d") + 1
-        file_index = arg.index("-f") if "-f" in arg else len(arg)
-        directory = os.path.join(*arg[dir_index:file_index])
+    if "-d" in args:
+        dir_index = args.index("-d") + 1
+        file_index = args.index("-f") if "-f" in args else len(args)
+        if dir_index < file_index:
+            directory = os.path.join(*args[dir_index:file_index])
 
-    if "-f" in arg:
-        file_name = arg[arg.index("-f") + 1]
+    if "-f" in args:
+        file_name = args[args.index("-f") + 1]
 
     os.makedirs(directory, exist_ok=True)
 
